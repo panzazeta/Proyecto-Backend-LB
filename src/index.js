@@ -1,8 +1,12 @@
-import express from 'express'
+import express from 'express';
+import path from "path";;
 import mongoose from 'mongoose'
 import userRouter from './routes/users.routes.js'
 import productRouter from './routes/products.routes.js'
-import cartRouter from './routes/cart.routes.js'
+import cartRouter from './routes/cart.routes.js';
+import { engine } from "express-handlebars";
+import { __dirname } from "./path.js";
+import { Server } from "socket.io";
 
 const app = express()
 const PORT = 4000
