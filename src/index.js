@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import userRouter from './routes/users.routes.js'
 import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/cart.routes.js';
+import messageRouter from './routes/messages.routes.js';
 import { engine } from "express-handlebars";
 import { __dirname } from "./path.js";
 import { Server } from "socket.io";
@@ -33,7 +34,7 @@ const io = new Server(serverExpress);
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter);
-// app.use('/api/messages', messageRouter);
+app.use('/api/messages', messageRouter);
 
 // app.get("/", async (req,res) => {
 //     const productList = await productsManager.getProducts();
