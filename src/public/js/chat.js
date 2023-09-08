@@ -30,6 +30,6 @@ botonChat.addEventListener('click', () => {
 socket.on('show-messages', (arrayMensajes) => {
     parrafosMensajes.innerHTML = ""
     arrayMensajes.forEach(mensaje => {
-        parrafosMensajes.innerHTML += `<p>${mensaje.postTime}: el usuario ${mensaje.email} escribió: ${mensaje.message} </p>`
+        parrafosMensajes.innerHTML += `<p>${mensaje.fecha}: el usuario ${mensaje.email} escribió: ${mensaje.message} </p>`
     })
 })
