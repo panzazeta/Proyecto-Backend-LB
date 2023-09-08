@@ -21,16 +21,15 @@ Swal.fire({
 
 botonChat.addEventListener('click', () => {
     if (valInput.value.trim().length > 0) {
+        console.log("test");
         socket.emit('add-message', {email: email, mensaje: valInput.value })
-        console.log(valInput);
-        valInput.value = ""
-       
+                valInput.value = ""
     }
 });
 
-socket.on('add-message', (arrayMensajes) => {
+socket.on('show-messages', (arrayMensajes) => {
     parrafosMensajes.innerHTML = ""
     arrayMensajes.forEach(mensaje => {
-        parrafosMensajes.innerHTML += `<p>${mensaje.fecha}: el usuario ${mensaje.user} escribió: ${mensaje.mensaje} </p>`
+        parrafosMensajes.innerHTML += `<p>${mensaje.postTime}: el usuario ${mensaje.email} escribió: ${mensaje.message} </p>`
     })
 })
