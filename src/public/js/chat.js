@@ -3,30 +3,30 @@ const socket = io()
 const botonChat = document.getElementById('botonChat')
 const parrafosMensajes = document.getElementById('parrafosMensajes')
 const valInput = document.getElementById('chatBox')
-let user
+let email
 
 Swal.fire({
-    title: "Identificación de usuario",
-    text: "Por favor, ingrese su nombre de usuario",
+    title: "Identificacion de usuario",
+    text: "Por favor, ingrese su email",
     input: "text",
     inputValidator: (valor) => {
         return !valor && "Ingrese un nombre de usuario válido"
     },
     allowOutsideClick: false
 }).then(resultado => {
-    user = resultado.value
-    console.log(user)
+    email = resultado.value
+    console.log(email)
+    socket.emit('display-inicial')
 })
 
 botonChat.addEventListener('click', () => {
-    let fechaActual = new Date().toLocaleString()
-
     if (valInput.value.trim().length > 0) {
-        socket.emit('mensaje', { fecha: fechaActual, user: user, mensaje: valInput.value })
+        socket.emit('add-message', {email: email, mensaje: valInput.value })
+        console.log(valInput);
         valInput.value = ""
-        socket.on()
+       
     }
-})
+});
 
 socket.on('add-message', (arrayMensajes) => {
     parrafosMensajes.innerHTML = ""

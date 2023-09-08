@@ -9,7 +9,7 @@ const messagesSchema = new Schema({
         type: String,
         required: true
     },
-    postTime: {
+    fecha: {
         type: Date,
         default: Date.now
     }
