@@ -6,11 +6,11 @@ const valInput = document.getElementById('chatBox')
 let user
 
 Swal.fire({
-    title: "Identificacion de usuario",
-    text: "Por favor ingrese su nombre de usuario",
+    title: "Identificación de usuario",
+    text: "Por favor, ingrese su nombre de usuario",
     input: "text",
     inputValidator: (valor) => {
-        return !valor && "Ingrese su nombre de usuario valido"
+        return !valor && "Ingrese un nombre de usuario válido"
     },
     allowOutsideClick: false
 }).then(resultado => {
@@ -28,7 +28,7 @@ botonChat.addEventListener('click', () => {
     }
 })
 
-socket.on('mensajes', (arrayMensajes) => {
+socket.on('add-message', (arrayMensajes) => {
     parrafosMensajes.innerHTML = ""
     arrayMensajes.forEach(mensaje => {
         parrafosMensajes.innerHTML += `<p>${mensaje.fecha}: el usuario ${mensaje.user} escribió: ${mensaje.mensaje} </p>`

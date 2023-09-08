@@ -11,3 +11,54 @@ li {
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para el contenedor del cuadro de entrada y el botón */
+  div.input-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Estilo para el cuadro de entrada de chat */
+  #chatBox {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  /* Estilo para el botón de enviar */
+  #botonChat {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Estilo para el área de mensajes */
+  div#messages-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    overflow-y: auto;
+    max-height: 300px; /* Ajusta la altura máxima según tu preferencia */
+  }
+  
+  /* Estilo para los mensajes del chat */
+  #parrafosMensajes p {
+    margin: 0;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+  }

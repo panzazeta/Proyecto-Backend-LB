@@ -5,6 +5,7 @@ import userRouter from './routes/users.routes.js'
 import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/cart.routes.js';
 import messageRouter from './routes/messages.routes.js';
+import { messageModel } from './models/message.models.js';
 import { engine } from "express-handlebars";
 import { __dirname } from "./path.js";
 import { Server } from "socket.io";
@@ -36,6 +37,30 @@ app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter);
 app.use('/api/messages', messageRouter);
 
+io.on('connection', (socket)=> {
+    console.log('Socket io conectado')
+
+    socket.on('add-message', async ({email, mensaje}) => {
+        console.log(mensaje)
+        await messageModel.create({email: email, message: mensaje})
+        const messages = await messageModel.find();
+        socket.emit('show-messages', messages);
+    })
+
+    socket.on('display-inicial', async() =>{
+        const messages = await messageModel.find();
+        socket.emit('show-messages', messages);
+    })
+});
+
+app.get('/static', (req, res) => {
+    res.render('chat', {
+        js: "chat.js",
+        css: "index.css",
+        title: "Chat",
+    });
+})
+
 // app.get("/", async (req,res) => {
 //     const productList = await productsManager.getProducts();
 //     res.render("index", {
@@ -51,4 +76,4 @@ app.use('/api/messages', messageRouter);
 //         title: "Products",
 //         js: "realTimeProducts.js"
 //     }) 
-// });
+// })
