@@ -13,27 +13,31 @@ li {
 }
 
 h1 {
-    text-align: center;
+    text-align: left;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin: 20px;
   }
   
-  /* Estilo para el contenedor del cuadro de entrada y el botón */
+  h2 {
+    text-align: left;
+    font-size: 20px;
+    margin: 20px;
+  }
+  
+
   div.input-container {
     text-align: center;
     margin-top: 20px;
   }
   
-  /* Estilo para el cuadro de entrada de chat */
   #chatBox {
-    width: 70%;
+    width: 50%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-right: 10px;
   }
   
-  /* Estilo para el botón de enviar */
   #botonChat {
     background-color: #007bff;
     color: white;
@@ -43,22 +47,21 @@ h1 {
     cursor: pointer;
   }
   
-  /* Estilo para el área de mensajes */
   div#messages-container {
-    border: 1px solid #ccc;
+    border: 2px solid #524fb7;
     padding: 10px;
-    max-width: 400px;
+    width: 50%;;
     margin: 0 auto;
     margin-top: 20px;
-    background-color: #f2f2f2;
+    background-color: #9a1919;
     border-radius: 5px;
     overflow-y: auto;
-    max-height: 300px; /* Ajusta la altura máxima según tu preferencia */
+    max-height: 300px;
   }
   
-  /* Estilo para los mensajes del chat */
   #parrafosMensajes p {
     margin: 0;
-    padding: 5px;
+    width: 50%;
+    padding: 10px;
     border-bottom: 1px solid #ccc;
   }

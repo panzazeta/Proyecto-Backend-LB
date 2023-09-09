@@ -41,13 +41,12 @@ io.on('connection', (socket)=> {
     console.log('Socket io conectado')
 
     socket.on('add-message', async ({email, mensaje}) => {
-        console.log(mensaje)
         await messageModel.create({email: email, message: mensaje})
         const messages = await messageModel.find();
         socket.emit('show-messages', messages);
     })
 
-    socket.on('display-inicial', async() =>{
+    socket.on('messages-list', async() =>{
         const messages = await messageModel.find();
         socket.emit('show-messages', messages);
     })

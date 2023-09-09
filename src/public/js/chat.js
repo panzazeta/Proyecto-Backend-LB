@@ -6,8 +6,7 @@ const valInput = document.getElementById('chatBox')
 let email
 
 Swal.fire({
-    title: "Identificacion de usuario",
-    text: "Por favor, ingrese su email",
+    title: "Por favor, ingresá tu email",
     input: "text",
     inputValidator: (valor) => {
         return !valor && "Ingrese un nombre de usuario válido"
@@ -15,21 +14,19 @@ Swal.fire({
     allowOutsideClick: false
 }).then(resultado => {
     email = resultado.value
-    console.log(email)
-    socket.emit('display-inicial')
+    socket.emit('messages-list')
 })
 
 botonChat.addEventListener('click', () => {
     if (valInput.value.trim().length > 0) {
-        console.log("test");
         socket.emit('add-message', {email: email, mensaje: valInput.value })
                 valInput.value = ""
     }
 });
 
-socket.on('show-messages', (arrayMensajes) => {
+socket.on('show-messages', (allMessages) => {
     parrafosMensajes.innerHTML = ""
-    arrayMensajes.forEach(mensaje => {
+    allMessages.forEach(mensaje => {
         parrafosMensajes.innerHTML += `<p>${mensaje.fecha}: el usuario ${mensaje.email} escribió: ${mensaje.message} </p>`
     })
 })
