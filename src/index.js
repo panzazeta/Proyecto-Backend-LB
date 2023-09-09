@@ -17,7 +17,7 @@ const serverExpress = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
 
-mongoose.connect('mongodb+srv://lucasbenielli:785JahPnIQZk8SOs@clusterlb.d50iram.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://lucasbenielli:password@clusterlb.d50iram.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('BDD conectada'))
     .catch(() => console.log('Error en conexion a BDD'))
 
@@ -29,7 +29,6 @@ app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 app.use("/static", express.static(path.join(__dirname, "/public")));
 
-//Server Socket.io
 const io = new Server(serverExpress);
 
 app.use('/api/users', userRouter)
