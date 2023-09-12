@@ -38,11 +38,11 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
             const prod = await productModel.findById(pid) //Busco si existe en LA BDD, no en el carrito
 
             if (prod) {
-                const indice = cart.products.products.findIndex(item => item.id_prod == pid) //Busco si existe en el carrito
+                const indice = cart.products.findIndex(item => item.id_prod == pid) //Busco si existe en el carrito
                 if (indice != -1) {
-                    cart.products.products[indice].quantity = quantity //Si existe en el carrito modifico la cantidad
+                    cart.products[indice].quantity = quantity //Si existe en el carrito modifico la cantidad
                 } else {
-                    cart.products.products.push({ id_prod: pid, quantity: quantity }) //Si no existe, lo agrego al carrito
+                    cart.products.push({ id_prod: pid, quantity: quantity }) //Si no existe, lo agrego al carrito
                 }
                 const respuesta = await cartModel.findByIdAndUpdate(cid, cart) //Actualizar el carrito
                 res.status(200).send({ respuesta: 'OK', mensaje: respuesta })
