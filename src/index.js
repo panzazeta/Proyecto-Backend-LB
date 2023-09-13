@@ -21,7 +21,7 @@ const serverExpress = app.listen(PORT, () => {
 mongoose.connect('mongodb+srv://lucasbenielli:785JahPnIQZk8SOs@clusterlb.d50iram.mongodb.net/?retryWrites=true&w=majority')
     .then(async () => {
         console.log('BDD conectada')
-        const resultados = await cartModel.findOne({ _id: '6501ec319476763e35c7a8e0' }).populate("products.id_prod");
+        const resultados = await cartModel.findOne({ _id: '6501ec319476763e35c7a8e0' });
         console.log(JSON.stringify(resultados))
     })
     .catch(() => console.log('Error en conexion a BDD'))
