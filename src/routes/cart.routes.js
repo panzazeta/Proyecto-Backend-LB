@@ -47,7 +47,7 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
                 const respuesta = await cartModel.findByIdAndUpdate(cid, cart) //Actualizar el carrito
                 res.status(200).send({ respuesta: 'OK', mensaje: respuesta })
             } else {
-                res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Produt Not Found' })
+                res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Product Not Found' })
             }
         } else {
             res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Cart Not Found' })

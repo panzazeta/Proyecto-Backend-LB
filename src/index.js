@@ -5,6 +5,7 @@ import userRouter from './routes/users.routes.js'
 import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/cart.routes.js';
 import messageRouter from './routes/messages.routes.js';
+import { cartModel } from './models/carts.models.js';
 import { messageModel } from './models/message.models.js';
 import { engine } from "express-handlebars";
 import { __dirname } from "./path.js";
@@ -18,7 +19,11 @@ const serverExpress = app.listen(PORT, () => {
 })
 
 mongoose.connect('mongodb+srv://lucasbenielli:785JahPnIQZk8SOs@clusterlb.d50iram.mongodb.net/?retryWrites=true&w=majority')
-    .then(() => console.log('BDD conectada'))
+    .then(async () => {
+        console.log('BDD conectada')
+        const resultados = await cartModel.findOne({ _id: '6501ec319476763e35c7a8e0' }).populate("products.id_prod");
+        console.log(JSON.stringify(resultados))
+    })
     .catch(() => console.log('Error en conexion a BDD'))
 
 app.use(express.json())
