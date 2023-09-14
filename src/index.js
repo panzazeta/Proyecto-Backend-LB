@@ -6,9 +6,9 @@ import userRouter from './routes/users.routes.js'
 import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/cart.routes.js';
 import messageRouter from './routes/messages.routes.js';
+import { messageModel } from './models/message.models.js';
 import { cartModel } from './models/carts.models.js';
 import { productModel } from './models/products.models.js';
-import { messageModel } from './models/message.models.js';
 import { engine } from "express-handlebars";
 import { __dirname } from "./path.js";
 import { Server } from "socket.io";
