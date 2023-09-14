@@ -38,7 +38,7 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
             const prod = await productModel.findById(pid) //Busco si existe en LA BDD, no en el carrito
 
             if (prod) {
-                const indice = cart.products.findIndex(item => item.id_prod == pid) //Busco si existe en el carrito
+                const indice = cart.products.findIndex(item => item.id_prod._id.toString() === pid); //Busco si existe en el carrito
                 if (indice != -1) {
                     cart.products[indice].quantity = quantity //Si existe en el carrito modifico la cantidad
                 } else {
@@ -58,6 +58,41 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
         res.status(400).send({ respuesta: 'Error en agregar producto Carrito', mensaje: error })
     }
 })
+
+//las 4 nuevas rutas de la segunda entrega:
+
+cartRouter.delete('/:cid/products/:pid', async (req, res) => {
+    const { cid, pid } = req.params;
+
+    try {
+        const cart = await cartModel.findById(cid);
+        
+        if (cart) {
+            const prod = await productModel.findById(pid);
+
+            if (prod) {
+                // Filtrar el producto del carrito localmente
+                cart.products = cart.products.filter(item => item.id_prod != pid); 
+
+                // Actualizar el carrito en la base de datos
+                await cartModel.findByIdAndUpdate(cid, { products: cart.products });
+
+                res.status(200).send({ respuesta: 'OK', mensaje: 'Producto eliminado del carrito' });
+            } else {
+                res.status(404).send({ respuesta: 'Error al eliminar producto del Carrito', mensaje: 'Product Not Found' });
+            }
+        } else {
+            res.status(404).send({ respuesta: 'Error al eliminar producto del Carrito', mensaje: 'Cart Not Found' });
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ respuesta: 'Error al eliminar producto del Carrito', mensaje: error });
+    }
+});
+           
+
+
 
 cartRouter.delete('/:cid', async (req, res) => {
     const { cid } = req.params;
