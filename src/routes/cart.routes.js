@@ -63,20 +63,14 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
 
 cartRouter.delete('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
-
     try {
         const cart = await cartModel.findById(cid);
-        
         if (cart) {
             const prod = await productModel.findById(pid);
 
             if (prod) {
-                // Filtrar el producto del carrito localmente
-                cart.products = cart.products.filter(item => item.id_prod != pid); 
-
-                // Actualizar el carrito en la base de datos
+                cart.products = cart.products.filter(item => item.id_prod._id.toString() !== pid);; 
                 await cartModel.findByIdAndUpdate(cid, { products: cart.products });
-
                 res.status(200).send({ respuesta: 'OK', mensaje: 'Producto eliminado del carrito' });
             } else {
                 res.status(404).send({ respuesta: 'Error al eliminar producto del Carrito', mensaje: 'Product Not Found' });
