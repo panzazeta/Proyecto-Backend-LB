@@ -86,7 +86,29 @@ cartRouter.delete('/:cid/products/:pid', async (req, res) => {
 });
            
 
+cartRouter.put('/:cid/products/:pid', async (req, res) => {
+    const { cid, pid } = req.params;
+    const { quantity } = req.body;
 
+    try {
+        const cart = await cartModel.findById(cid);
+        if (cart) {
+            const indice = cart.products.findIndex(item => item.id_prod._id.toString() === pid);
+            if (indice !== -1) {
+                cart.products[indice].quantity = quantity;
+                const respuesta = await cartModel.findByIdAndUpdate(cid, cart);
+                res.status(200).send({ respuesta: 'OK', mensaje: respuesta });
+            } else {
+                res.status(404).send({ respuesta: 'Error al actualizar producto en el Carrito', mensaje: 'Product Not Found in Cart' });
+            }
+        } else {
+            res.status(404).send({ respuesta: 'Error al actualizar producto en el Carrito', mensaje: 'Cart Not Found' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ respuesta: 'Error al actualizar producto en el Carrito', mensaje: error });
+    }
+});
 
 cartRouter.delete('/:cid', async (req, res) => {
     const { cid } = req.params;
