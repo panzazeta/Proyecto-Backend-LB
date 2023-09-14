@@ -1,3 +1,4 @@
+import "dotenv/config"
 import express from 'express';
 import path from "path";
 import mongoose from 'mongoose'
@@ -19,7 +20,7 @@ const serverExpress = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
 
-mongoose.connect('mongodb+srv://lucasbenielli:785JahPnIQZk8SOs@clusterlb.d50iram.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGO_URL)
     .then(async () => {
         console.log('BDD conectada')
         // const resultado = await productModel.paginate( {stock: 2233});
