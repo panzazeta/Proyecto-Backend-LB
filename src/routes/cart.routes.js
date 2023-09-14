@@ -59,4 +59,24 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
     }
 })
 
+cartRouter.delete('/:cid', async (req, res) => {
+    const { cid } = req.params;
+
+    try {
+        const cart = await cartModel.findByIdAndUpdate(cid, { products: [] });
+
+        if (cart) {
+            res.status(200).send({ respuesta: 'OK', mensaje: 'Carrito vaciado', cart });
+        } else {
+            res.status(404).send({ respuesta: 'Error en eliminar productos del carrito', mensaje: 'Cart Not Found' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ respuesta: 'Error en eliminar productos del carrito', mensaje: error });
+    }
+});
+
+
+
+
 export default cartRouter
