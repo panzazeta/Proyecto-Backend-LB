@@ -69,7 +69,7 @@ cartRouter.delete('/:cid/products/:pid', async (req, res) => {
             const prod = await productModel.findById(pid);
 
             if (prod) {
-                cart.products = cart.products.filter(item => item.id_prod._id.toString() !== pid);; 
+                cart.products = cart.products.filter(item => item.id_prod._id.toString() !== pid); 
                 await cartModel.findByIdAndUpdate(cid, { products: cart.products });
                 res.status(200).send({ respuesta: 'OK', mensaje: 'Producto eliminado del carrito' });
             } else {
@@ -85,6 +85,8 @@ cartRouter.delete('/:cid/products/:pid', async (req, res) => {
     }
 });
            
+//put con array de productos
+
 
 cartRouter.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
@@ -126,8 +128,5 @@ cartRouter.delete('/:cid', async (req, res) => {
         res.status(400).send({ respuesta: 'Error en eliminar productos del carrito', mensaje: error });
     }
 });
-
-
-
 
 export default cartRouter
