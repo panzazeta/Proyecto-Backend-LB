@@ -4,10 +4,20 @@ import { productModel } from "../models/products.models.js";
 const productRouter = Router()
 
 productRouter.get('/', async (req, res) => {
-    const { limit } = req.query
+        const { limit, page, sort, query } = req.query;
+        const queryProds = query ? { category: query } : {};
+        const limitProds = limit ?? 10;
+        const pageProds = page ?? 1;
+        const sortProds = sort === 'asc' ? 'asc' : 'desc';
+    
+        const options = {
+            limit: parseInt(limitProds),
+            page: parseInt(pageProds),
+            sort: { price: sortProds },
+        };
 
     try {
-        const prods = await productModel.find().limit(limit)
+        const prods = await productModel.paginate(queryProds, options);
         res.status(200).send({ respuesta: 'OK', mensaje: prods })
     } catch (error) {
         res.status(400).send({ respuesta: 'Error en consultar productos', mensaje: error })
