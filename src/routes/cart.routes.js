@@ -88,7 +88,7 @@ cartRouter.delete('/:cid/products/:pid', async (req, res) => {
 
 cartRouter.put('/:cid', async (req, res) => {
     const { cid } = req.params;
-    const newProducts = req.body; // El cuerpo de la solicitud debe contener el array de productos
+    const newProducts = req.body;
 
     try {
         const cart = await cartModel.findById(cid);
@@ -101,31 +101,25 @@ cartRouter.put('/:cid', async (req, res) => {
             return res.status(400).send({ respuesta: 'Error en actualizar carrito', mensaje: 'Products should be an array' });
         }
 
-        // Recorre el array de nuevos productos y actualiza el carrito
         newProducts.forEach((newProduct) => {
             const { id_prod, quantity } = newProduct;
-            const existingProductIndex = cart.products.findIndex(item => item.id_prod === id_prod);
+            const isProductIndex = cart.products.findIndex(item => item.id_prod === id_prod);
 
-            if (existingProductIndex !== -1) {
-                // Si el producto ya está en el carrito, actualiza la cantidad
-                cart.products[existingProductIndex].quantity = quantity;
+            if (isProductIndex !== -1) {
+               cart.products[isProductIndex].quantity = quantity;
             } else {
-                // Si el producto no está en el carrito, agrégalo
-                cart.products.push({ id_prod, quantity });
+               cart.products.push({ id_prod, quantity });
             }
         });
 
-        // Guarda el carrito actualizado en la base de datos
         const updatedCart = await cartModel.findByIdAndUpdate(cid, cart);
-
         res.status(200).send({ respuesta: 'OK', mensaje: updatedCart });
+
     } catch (error) {
         console.error(error);
         res.status(400).send({ respuesta: 'Error en actualizar carrito', mensaje: error.message });
     }
 });
-
-        
 
 cartRouter.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
