@@ -50,7 +50,7 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
                 res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Product Not Found' })
             }
         } else {
-            res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Cart Not Found' })
+            res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Cart not Found' })
         }
 
     } catch (error) {
