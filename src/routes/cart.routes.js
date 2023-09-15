@@ -87,37 +87,44 @@ cartRouter.delete('/:cid/products/:pid', async (req, res) => {
            
 
 cartRouter.put('/:cid', async (req, res) => {
-    const { cid } = req.params
-    const productsArray = req.body.products
-
-    if (!Array.isArray(productsArray)) {
-        return res.status(400).send({ respuesta: 'Error', mensaje: 'Products should be an array' })
-    }
+    const { cid } = req.params;
+    const newProducts = req.body; // El cuerpo de la solicitud debe contener el array de productos
 
     try {
-        const cart = await cartModel.findById(cid)
-        if (!cart) {
-            throw new Error("Cart not found")
-        }
-        for (let prod of productsArray) {
-            const indice = cart.products.findIndex(cartProduct => cartProduct.id_prod.toString() === prod.id_prod)
+        const cart = await cartModel.findById(cid);
 
-            if (indice !== -1) {
-                cart.products[indice].quantity = prod.quantity
-            } else {
-                const existe = await productModel.findById(prod.id_prod)
-                if (!existe) {
-                    throw new Error(`Product with ID ${prod.id_prod} not found`)
-                }
-                cart.products.push(prod)
-            }
+        if (!cart) {
+            return res.status(404).send({ respuesta: 'Error en actualizar carrito', mensaje: 'Cart Not Found' });
         }
-        const respuesta = await cartModel.findByIdAndUpdate(cid, cart)
-        res.status(200).send({ respuesta: 'OK', mensaje: respuesta })
+
+        if (!Array.isArray(newProducts)) {
+            return res.status(400).send({ respuesta: 'Error en actualizar carrito', mensaje: 'Products should be an array' });
+        }
+
+        // Recorre el array de nuevos productos y actualiza el carrito
+        newProducts.forEach((newProduct) => {
+            const { id_prod, quantity } = newProduct;
+            const existingProductIndex = cart.products.findIndex(item => item.id_prod === id_prod);
+
+            if (existingProductIndex !== -1) {
+                // Si el producto ya está en el carrito, actualiza la cantidad
+                cart.products[existingProductIndex].quantity = quantity;
+            } else {
+                // Si el producto no está en el carrito, agrégalo
+                cart.products.push({ id_prod, quantity });
+            }
+        });
+
+        // Guarda el carrito actualizado en la base de datos
+        const updatedCart = await cartModel.findByIdAndUpdate(cid, cart);
+
+        res.status(200).send({ respuesta: 'OK', mensaje: updatedCart });
     } catch (error) {
-        res.status(error.message.includes("not found") ? 404 : 400).send({ respuesta: 'Error', mensaje: error.message })
+        console.error(error);
+        res.status(400).send({ respuesta: 'Error en actualizar carrito', mensaje: error.message });
     }
-})
+});
+
         
 
 cartRouter.put('/:cid/products/:pid', async (req, res) => {
