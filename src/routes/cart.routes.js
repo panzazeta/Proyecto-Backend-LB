@@ -85,8 +85,40 @@ cartRouter.delete('/:cid/products/:pid', async (req, res) => {
     }
 });
            
-//put con array de productos
 
+cartRouter.put('/:cid', async (req, res) => {
+    const { cid } = req.params
+    const productsArray = req.body.products
+
+    if (!Array.isArray(productsArray)) {
+        return res.status(400).send({ respuesta: 'Error', mensaje: 'Products should be an array' })
+    }
+
+    try {
+        const cart = await cartModel.findById(cid)
+        if (!cart) {
+            throw new Error("Cart not found")
+        }
+        for (let prod of productsArray) {
+            const indice = cart.products.findIndex(cartProduct => cartProduct.id_prod.toString() === prod.id_prod)
+
+            if (indice !== -1) {
+                cart.products[indice].quantity = prod.quantity
+            } else {
+                const existe = await productModel.findById(prod.id_prod)
+                if (!existe) {
+                    throw new Error(`Product with ID ${prod.id_prod} not found`)
+                }
+                cart.products.push(prod)
+            }
+        }
+        const respuesta = await cartModel.findByIdAndUpdate(cid, cart)
+        res.status(200).send({ respuesta: 'OK', mensaje: respuesta })
+    } catch (error) {
+        res.status(error.message.includes("not found") ? 404 : 400).send({ respuesta: 'Error', mensaje: error.message })
+    }
+})
+        
 
 cartRouter.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
