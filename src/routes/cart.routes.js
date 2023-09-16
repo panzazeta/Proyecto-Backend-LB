@@ -98,7 +98,7 @@ cartRouter.put('/:cid', async (req, res) => {
         }
 
         if (!Array.isArray(newProducts)) {
-            return res.status(400).send({ respuesta: 'Error en actualizar carrito', mensaje: 'Products should be an array' });
+            return res.status(400).send({ respuesta: 'Error en actualizar carrito', mensaje: 'Please send a valid array' });
         }
 
         newProducts.forEach((newProduct) => {
