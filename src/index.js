@@ -2,6 +2,9 @@ import "dotenv/config"
 import express from 'express';
 import path from "path";
 import mongoose from 'mongoose'
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import userRouter from './routes/users.routes.js'
 import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/cart.routes.js';
@@ -20,30 +23,54 @@ const serverExpress = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
 
+//BDD
 mongoose.connect(process.env.MONGO_URL)
-    .then(async () => {
+    .then( async () => {
         console.log('BDD conectada')
-        // const resultado = await productModel.paginate( {stock: 2233});
-        // console.log(resultado);
-        // const resultados = await cartModel.findOne({ _id: '6501ec319476763e35c7a8e0' });
-        // console.log(JSON.stringify(resultados))
     })
     .catch(() => console.log('Error en conexion a BDD'))
 
+//Middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}));
+app.use(cookieParser(process.env.SIGNED_COOKIE));
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URL,
+        mongoOptions: {
+            useNewUrlParser: true, 
+            useUnifiedTopology: true
+        },
+        ttl: 60 
+
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+}))
+
+//Routes
+app.use('/api/users', userRouter)
+app.use('/api/products', productRouter)
+app.use('/api/carts', cartRouter);
+app.use('/api/messages', messageRouter);
+
+app.get('/setCookie', (req, res) => {
+    res.cookie('CookieCookie', 'Esto es una cookie', { maxAge: 10000, signed: true }).send('Cookie generada')
+})
+
+app.get('/getCookie', (req, res) => {
+    res.send(req.signedCookies) 
+})
+
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 app.use("/chat", express.static(path.join(__dirname, "/public")));
 
+//Server
 const io = new Server(serverExpress);
-
-app.use('/api/users', userRouter)
-app.use('/api/products', productRouter)
-app.use('/api/carts', cartRouter);
-app.use('/api/messages', messageRouter);
 
 io.on('connection', (socket)=> {
     console.log('Socket io conectado')
