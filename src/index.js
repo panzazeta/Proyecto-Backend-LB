@@ -11,8 +11,6 @@ import cartRouter from './routes/cart.routes.js';
 import messageRouter from './routes/messages.routes.js';
 import sessionRouter from './routes/session.routes.js'
 import { messageModel } from './models/message.models.js';
-import { cartModel } from './models/carts.models.js';
-import { productModel } from './models/products.models.js';
 import { engine } from "express-handlebars";
 import { __dirname } from "./path.js";
 import { Server } from "socket.io";
@@ -56,14 +54,6 @@ app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter);
 app.use('/api/messages', messageRouter);
 app.use('/api/sessions', sessionRouter);
-
-// app.get('/setCookie', (req, res) => {
-//     res.cookie('CookieCookie', 'Esto es una cookie', { maxAge: 10000, signed: true }).send('Cookie generada')
-// })
-
-// app.get('/getCookie', (req, res) => {
-//     res.send(req.signedCookies) 
-// })
 
 
 app.engine("handlebars", engine());
