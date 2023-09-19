@@ -87,14 +87,12 @@ app.get('/chat', (req, res) => {
     });
 })
 
-// app.get("/", async (req,res) => {
-//     const productList = await productsManager.getProducts();
-//     res.render("index", {
-//             css: "index.css",
-//             title: "Index",
-//             products: productList
-//     });
-// });
+app.get("/products", async (req,res) => {
+    res.render("products", {
+            css: "static.css",
+            title: "Products"
+    });
+});
 
 // app.get("/static", (req, res) => {
 //     res.render("realTimeProducts", {
