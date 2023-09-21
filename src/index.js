@@ -96,10 +96,11 @@ io.on('connection', (socket)=> {
 app.get("/products", async (req, res) => {
     try {
       const products = await productModel.find();
+     
       res.render("products", {
         css: "products.css",
         title: "Listado de productos",
-        // js: "script.js",
+        js: "script.js",
         products: products.map((product) => ({
           title: product.title,
           description: product.description,
@@ -107,7 +108,7 @@ app.get("/products", async (req, res) => {
           stock: product.stock,
           code: product.code,
         })),
-      });
+              });
     } catch (error) {
       console.error("Error al obtener los productos:", error);
     }
@@ -118,6 +119,14 @@ app.get("/login", (req, res) => {
       css: "static.css",
     //   js: "login.js",
       title: "Login",
+    });
+  });
+
+  app.get("/logout", (req, res) => {
+    res.render("logout", {
+      css: "static.css",
+    //   js: "login.js",
+      title: "Logout",
     });
   });
 
