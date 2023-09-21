@@ -93,21 +93,13 @@ io.on('connection', (socket)=> {
 
 
 //Vistas HBS
-app.get('/chat', (req, res) => {
-    res.render('chat', {
-        js: "chat.js",
-        css: "index.css",
-        title: "Chat",
-    });
-})
-
 app.get("/products", async (req, res) => {
     try {
       const products = await productModel.find();
       res.render("products", {
         css: "products.css",
         title: "Listado de productos",
-        js: "script.js",
+        // js: "script.js",
         products: products.map((product) => ({
           title: product.title,
           description: product.description,
@@ -121,13 +113,22 @@ app.get("/products", async (req, res) => {
     }
   });
 
-  app.get("/login", (req, res) => {
+app.get("/login", (req, res) => {
     res.render("login", {
       css: "static.css",
     //   js: "login.js",
       title: "Login",
     });
   });
+
+app.get('/chat', (req, res) => {
+    res.render('chat', {
+        js: "chat.js",
+        css: "index.css",
+        title: "Chat",
+    });
+  })
+
 
 // app.get("/static", (req, res) => {
 //     res.render("realTimeProducts", {
