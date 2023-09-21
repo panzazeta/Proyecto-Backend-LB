@@ -50,13 +50,13 @@ app.use(session({
 }));
 
 //Middleware autorización
-// const auth = (req, res, next) => {
-//     if (req.session.login === true) {
-//       next();
-//     } else {
-//       res.redirect("/api/sessions/login");
-//     }
-//   };
+const auth = (req, res, next) => {
+    if (req.session.login === true) {
+      next();
+    } else {
+      res.redirect("/login");
+    }
+  };
 
 //Routes
 app.use('/api/users', userRouter)
@@ -93,14 +93,14 @@ io.on('connection', (socket)=> {
 
 
 //Vistas HBS
-app.get("/products", async (req, res) => {
+app.get("/products", auth, async (req, res) => {
     try {
       const products = await productModel.find();
      
       res.render("products", {
         css: "products.css",
         title: "Listado de productos",
-        js: "login.js",
+        js: "products.js",
         products: products.map((product) => ({
           title: product.title,
           description: product.description,
@@ -117,7 +117,7 @@ app.get("/products", async (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login", {
       css: "static.css",
-    //   js: "login.js",
+      js: "login.js",
       title: "Login",
     });
   });
@@ -129,12 +129,3 @@ app.get('/chat', (req, res) => {
         title: "Chat",
     });
   })
-
-
-// app.get("/static", (req, res) => {
-//     res.render("realTimeProducts", {
-//         css: "static.css",
-//         title: "Products",
-//         js: "realTimeProducts.js"
-//     }) 
-// })
