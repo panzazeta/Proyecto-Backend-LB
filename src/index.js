@@ -100,7 +100,7 @@ app.get("/products", async (req, res) => {
       res.render("products", {
         css: "products.css",
         title: "Listado de productos",
-        js: "script.js",
+        js: "login.js",
         products: products.map((product) => ({
           title: product.title,
           description: product.description,
@@ -119,14 +119,6 @@ app.get("/login", (req, res) => {
       css: "static.css",
     //   js: "login.js",
       title: "Login",
-    });
-  });
-
-  app.get("/logout", (req, res) => {
-    res.render("logout", {
-      css: "static.css",
-    //   js: "login.js",
-      title: "Logout",
     });
   });
 
