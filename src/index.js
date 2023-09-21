@@ -73,7 +73,7 @@ app.use("/chat", express.static(path.join(__dirname, "/public")));
 app.use("/products", express.static(path.join(__dirname, "/public")));
 app.use("/login", express.static(path.join(__dirname, "/public")));
 
-//Server
+//Server Socket
 const io = new Server(serverExpress);
 
 io.on('connection', (socket)=> {
@@ -91,6 +91,8 @@ io.on('connection', (socket)=> {
     })
 });
 
+
+//Vistas HBS
 app.get('/chat', (req, res) => {
     res.render('chat', {
         js: "chat.js",
@@ -122,7 +124,7 @@ app.get("/products", async (req, res) => {
   app.get("/login", (req, res) => {
     res.render("login", {
       css: "static.css",
-      js: "login.js",
+    //   js: "login.js",
       title: "Login",
     });
   });
