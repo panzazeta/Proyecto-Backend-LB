@@ -3,7 +3,7 @@ const logoutButton = document.querySelector('.logout-button');
 logoutButton.addEventListener('click', async () => {
     try {
         const response = await fetch('/api/sessions/logout', {
-            method: 'GET', // Utiliza el método GET para logout según tu ruta en session.routes.js
+            method: 'GET',
         });
 
         if (response.status === 200) {
@@ -15,3 +15,4 @@ logoutButton.addEventListener('click', async () => {
         console.error('Error al realizar el logout:', error);
     }
 });
+

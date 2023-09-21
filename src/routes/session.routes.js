@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { userModel } from "../models/users.models.js";
+import Swal from 'sweetalert2'
 
 const sessionRouter = Router()
 
