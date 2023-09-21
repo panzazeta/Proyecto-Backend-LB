@@ -47,7 +47,16 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
-}))
+}));
+
+//Middleware autorización
+// const auth = (req, res, next) => {
+//     if (req.session.login === true) {
+//       next();
+//     } else {
+//       res.redirect("/api/sessions/login");
+//     }
+//   };
 
 //Routes
 app.use('/api/users', userRouter)
@@ -61,6 +70,8 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 app.use("/chat", express.static(path.join(__dirname, "/public")));
+app.use("/products", express.static(path.join(__dirname, "/public")));
+app.use("/login", express.static(path.join(__dirname, "/public")));
 
 //Server
 const io = new Server(serverExpress);
@@ -92,8 +103,8 @@ app.get("/products", async (req, res) => {
     try {
       const products = await productModel.find();
       res.render("products", {
-        css: "static.css",
-        title: "Home",
+        css: "products.css",
+        title: "Listado de productos",
         js: "script.js",
         products: products.map((product) => ({
           title: product.title,
@@ -106,6 +117,14 @@ app.get("/products", async (req, res) => {
     } catch (error) {
       console.error("Error al obtener los productos:", error);
     }
+  });
+
+  app.get("/login", (req, res) => {
+    res.render("login", {
+      css: "static.css",
+      js: "login.js",
+      title: "Login",
+    });
   });
 
 // app.get("/static", (req, res) => {
