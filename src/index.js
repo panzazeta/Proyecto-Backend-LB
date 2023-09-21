@@ -108,6 +108,8 @@ app.get("/products", auth, async (req, res) => {
           stock: product.stock,
           code: product.code,
         })),
+        sessionActive: req.session.login,
+        username: req.session.first_name, 
               });
     } catch (error) {
       console.error("Error al obtener los productos:", error);

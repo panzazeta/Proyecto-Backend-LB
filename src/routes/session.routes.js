@@ -14,7 +14,8 @@ sessionRouter.post('/login', async (req, res) => {
 
         if (user) {
             if (user.password == password) {
-                req.session.login = true
+                req.session.login = true;
+                req.session.first_name = user.first_name;
                 res.redirect('/products', 200, { 'info': 'user' })
             } else {
                 res.status(401).send({ resultado: 'Contaseña no valida', message: password })

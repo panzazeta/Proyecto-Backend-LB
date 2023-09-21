@@ -1,5 +1,9 @@
 <h1>Listado de Productos</h1>
-   
+
+{{#if sessionActive}}
+  <h2>Bienvenido {{username}}</h2>
+{{/if}}
+
 <div class="card-container">
   {{#each products}}
     <div class="card">
