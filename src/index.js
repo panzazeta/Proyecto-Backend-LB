@@ -10,6 +10,7 @@ import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/cart.routes.js';
 import messageRouter from './routes/messages.routes.js';
 import sessionRouter from './routes/session.routes.js'
+import { productModel } from "./models/products.models.js";
 import { messageModel } from './models/message.models.js';
 import { engine } from "express-handlebars";
 import { __dirname } from "./path.js";
@@ -87,12 +88,25 @@ app.get('/chat', (req, res) => {
     });
 })
 
-app.get("/products", async (req,res) => {
-    res.render("products", {
-            css: "static.css",
-            title: "Products"
-    });
-});
+app.get("/products", async (req, res) => {
+    try {
+      const products = await productModel.find();
+      res.render("products", {
+        css: "static.css",
+        title: "Home",
+        js: "script.js",
+        products: products.map((product) => ({
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          stock: product.stock,
+          code: product.code,
+        })),
+      });
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+    }
+  });
 
 // app.get("/static", (req, res) => {
 //     res.render("realTimeProducts", {
