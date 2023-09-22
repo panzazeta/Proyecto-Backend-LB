@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { userModel } from "../models/users.models.js";
-import Swal from 'sweetalert2'
 
 const sessionRouter = Router()
 
@@ -19,10 +18,10 @@ sessionRouter.post('/login', async (req, res) => {
                 req.session.first_name = user.first_name;
                 res.redirect('/products', 200, { 'info': 'user' })
             } else {
-                res.status(401).send({ resultado: 'Contaseña no valida', message: password })
+                res.status(401).send({ resultado: 'Contaseña no válida', message: password })
             }
         } else {
-            res.status(404).send({ resultado: 'Not Found', message: user })
+            res.status(404).send({ resultado: 'Usuario no encontrado', message: user })
         }
 
     } catch (error) {
