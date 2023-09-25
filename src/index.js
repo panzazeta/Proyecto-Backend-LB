@@ -1,7 +1,9 @@
 import "dotenv/config"
 import express from 'express';
 import path from "path";
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+import passport from 'passport';
+import initializePassport from './config/passport.js';
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -49,6 +51,10 @@ app.use(session({
     saveUninitialized: false
 }));
 
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 //Middleware autorización
 const auth = (req, res, next) => {
     if (req.session.login === true) {
@@ -57,6 +63,8 @@ const auth = (req, res, next) => {
       res.redirect("/login");
     }
   };
+
+
 
 //Routes
 app.use('/api/users', userRouter)
