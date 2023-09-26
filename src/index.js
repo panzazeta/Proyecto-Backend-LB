@@ -4,6 +4,7 @@ import path from "path";
 import mongoose from 'mongoose';
 import passport from 'passport';
 import initializePassport from './config/passport.js';
+import GithubStrategy from 'passport-github2';
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
