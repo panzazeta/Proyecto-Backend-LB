@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { passportError, authorization } from "../utils/messagesError.js";
 
 const sessionRouter = Router()
 
@@ -48,6 +49,16 @@ sessionRouter.get('/logout', (req, res) => {
         req.session.destroy()
     }
     res.redirect('/login', 200, { resultado: 'Usuario deslogueado' })
+})
+
+//Verifica que el token enviado sea valido (misma contraseña de encriptacion)
+sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), (req, res) => {
+    console.log(req)
+    res.send(req.user)
+})
+
+sessionRouter.get('/current', passportError('jwt'), authorization('Admin'), (req, res) => {
+    res.send(req.user)
 })
 
 export default sessionRouter

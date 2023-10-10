@@ -7,11 +7,7 @@ import initializePassport from './config/passport.js';
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import userRouter from './routes/users.routes.js'
-import productRouter from './routes/products.routes.js'
-import cartRouter from './routes/cart.routes.js';
-import messageRouter from './routes/messages.routes.js';
-import sessionRouter from './routes/session.routes.js'
+import router from "./routes/index.routes.js";
 import { productModel } from "./models/products.models.js";
 import { messageModel } from './models/message.models.js';
 import { engine } from "express-handlebars";
@@ -31,6 +27,9 @@ mongoose.connect(process.env.MONGO_URL)
         console.log('BDD conectada')
     })
     .catch(() => console.log('Error en conexion a BDD'))
+
+//Router
+app.use("/", router);
 
 //Middlewares
 app.use(express.json())
@@ -63,16 +62,6 @@ const auth = (req, res, next) => {
       res.redirect("/login");
     }
   };
-
-
-
-//Routes
-app.use('/api/users', userRouter)
-app.use('/api/products', productRouter)
-app.use('/api/carts', cartRouter);
-app.use('/api/messages', messageRouter);
-app.use('/api/sessions', sessionRouter);
-
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
