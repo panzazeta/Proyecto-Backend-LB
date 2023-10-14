@@ -1,21 +1,21 @@
-import local from 'passport-local' //Importo la estrategia
+import local from 'passport-local';
 import GithubStrategy from 'passport-github2';
 import jwt from 'passport-jwt'
 import passport from 'passport'
 import { createHash, validatePassword } from '../utils/bycript.js'
 import { userModel } from '../models/users.models.js'
 
-const LocalStrategy = local.Strategy
+//Estrategias
+const LocalStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
 
 const initializePassport = () => {
 
     const cookieExtractor = req => {
         const token = req.cookies.jwtCookie ? req.cookies.jwtCookie : {}
-
         console.log("cookieExtractor", token)
-
         return token
-
     }
 
     passport.use('jwt', new JWTStrategy({
@@ -28,9 +28,7 @@ const initializePassport = () => {
         } catch (error) {
             return done(error)
         }
-
     }))
-
 
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
