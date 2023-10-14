@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { passportError, authorization } from "../utils/messagesError.js";
+import { generateToken } from "../utils/jwt.js";
 
 const sessionRouter = Router()
 
@@ -17,6 +18,10 @@ sessionRouter.post('/login', passport.authenticate('login'), async (req, res) =>
             email: req.user.email
         }
 
+        const token = generateToken(req.user)
+        res.cookie('jwtCookie', token, {
+            maxAge: 43200000 //12hs en ms
+        })
         res.status(200).send({ payload: req.user })
     } catch (error) {
         res.status(500).send({ mensaje: `Error al iniciar sesion ${error}` })
@@ -48,7 +53,9 @@ sessionRouter.get('/logout', (req, res) => {
     if (req.session.login) {
         req.session.destroy()
     }
-    res.redirect('/login', 200, { resultado: 'Usuario deslogueado' })
+    res.clearCookie('jwtCookie')
+    res.status(200).send({ resultado: 'Usuario deslogueado' })
+    //res.redirect('rutaLogin', 200, { resultado: 'Usuario deslogueado' })
 })
 
 //Verifica que el token enviado sea valido (misma contraseña de encriptacion)
@@ -57,7 +64,7 @@ sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), 
     res.send(req.user)
 })
 
-sessionRouter.get('/current', passportError('jwt'), authorization('Admin'), (req, res) => {
+sessionRouter.get('/current', passportError('jwt'), authorization('user'), (req, res) => {
     res.send(req.user)
 })
 
