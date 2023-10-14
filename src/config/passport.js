@@ -4,6 +4,7 @@ import jwt from 'passport-jwt'
 import passport from 'passport'
 import { createHash, validatePassword } from '../utils/bycript.js'
 import { userModel } from '../models/users.models.js'
+// import dotenv from 'dotenv';
 
 //Estrategias
 const LocalStrategy = local.Strategy;
@@ -32,8 +33,8 @@ const initializePassport = () => {
 
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
-            
             //Registro de usuario
+
             const { first_name, last_name, email, age } = req.body
 
             try {
@@ -45,6 +46,7 @@ const initializePassport = () => {
                 }
 
                 //Crear usuario
+
                 const passwordHash = createHash(password)
                 const userCreated = await userModel.create({
                     first_name: first_name,
@@ -55,8 +57,6 @@ const initializePassport = () => {
                 })
 
                 return done(null, userCreated)
-                //done indica que si no hay error, devuelve null
-                //como 2do parámetro devuelve el user creado
 
             } catch (error) {
                 return done(error)

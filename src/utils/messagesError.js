@@ -1,6 +1,6 @@
 import passport from "passport";
 
-//Funcion general para retornar errores en las estrategias de Passport
+//Funcion general para retornar errores es las estrategias de passport
 
 export const passportError = (strategy) => { //Voy a enviar local, github o jwt
     return async (req, res, next) => {
@@ -16,7 +16,7 @@ export const passportError = (strategy) => { //Voy a enviar local, github o jwt
 
             req.user = user
             next()
-        })(req, res, next) //Esto es porque me va a llamar un middleware
+        })(req, res, next) //Esto es por que me va a llamar un middleware
 
     }
 }

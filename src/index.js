@@ -28,9 +28,6 @@ mongoose.connect(process.env.MONGO_URL)
     })
     .catch(() => console.log('Error en conexion a BDD'))
 
-//Router
-app.use("/", router);
-
 //Middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}));
@@ -53,6 +50,9 @@ app.use(session({
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
+
+//Router
+app.use("/", router);
 
 //Middleware autorización
 const auth = (req, res, next) => {

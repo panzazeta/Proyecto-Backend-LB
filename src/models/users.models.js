@@ -1,4 +1,6 @@
 import { Schema, model } from "mongoose";
+import { cartModel } from './carts.models.js'
+import paginate from 'mongoose-paginate-v2'
 
 const userSchema = new Schema({
     first_name: {
@@ -26,7 +28,24 @@ const userSchema = new Schema({
     rol: {
         type: String,
         default: 'user'
+    },
+    cart: {
+        type: Schema.Types.ObjectId,
+        ref: 'carts'
     }
 })
 
-export const userModel = model('users', userSchema);
+userSchema.plugin(paginate);
+
+//previo a generar un nuevo usuario, genero nuevo cart
+userSchema.pre('save', async function (next) {
+    try {
+        const newCart = await cartModel.create({})
+        this.cart = newCart._id
+    } catch (error) {
+        next(error)
+    }
+
+})
+
+export const userModel = model('users', userSchema)
